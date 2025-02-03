@@ -4,7 +4,7 @@ const TodoCard = () => {
   return (
     <div className="todo-card">
       <div className="todo-info">
-        <h4>Thats a to do heading</h4>
+        <h3>Thats a to do heading</h3>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
           voluptatum maxime provident veritatis laboriosam atque laudantium

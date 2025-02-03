@@ -2,7 +2,7 @@ import React from "react";
 
 const Filters = () => {
   return (
-    <div>
+    <div className="filters">
       <button>
         All <span>(2)</span>
       </button>

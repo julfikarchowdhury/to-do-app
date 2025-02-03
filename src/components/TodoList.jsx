@@ -3,9 +3,12 @@ import Todocard from "./Todocard";
 
 const TodoList = () => {
   return (
-    <div>
+    <div className="to-do-list">
+      <Todocard />      <Todocard />
       <Todocard />
-      TodoList
+      <Todocard />
+      <Todocard />
+
     </div>
   );
 };
