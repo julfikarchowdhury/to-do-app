@@ -29,7 +29,6 @@ const TodoProvider = ({ children }) => {
 
   const deleteAllData = () => {
     localStorage.clear();
-
     setTodos([]);
   };
   return (
