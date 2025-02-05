@@ -1,23 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
+import { TodoContext } from "../context/TodoContext";
 
-const TodoCard = () => {
+const TodoCard = ({ todo }) => {
+  const { markDoneTodo, removeTodo } = useContext(TodoContext);
+
   return (
     <div className="todo-card">
       <div className="todo-info">
-        <h3>Thats a to do heading</h3>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
-          voluptatum maxime provident veritatis laboriosam atque laudantium
-          suscipit consequuntur, possimus distinctio, illum ex veniam
-          reiciendis, et perspiciatis quam alias eveniet doloribus dolore minus!
-          Aliquid temporibus consectetur laboriosam ratione eius labore nisi
-          facilis, doloribus excepturi ab repudiandae expedita nostrum
-          repellendus quam tempora.
-        </p>
+        <h3>{todo.title}</h3>
+        <p>{todo.description}</p>
       </div>
       <div className="todo-buttons">
-        <button className="done">Done</button>
-        <button className="delete">Delete</button>
+        {todo.done ? (
+          <button className="completed">Completed</button>
+        ) : (
+          <button className="done" onClick={() => markDoneTodo(todo.id)}>
+            Mark Done
+          </button>
+        )}
+
+        <button className="delete" onClick={() => removeTodo(todo.id)}>
+          Delete
+        </button>
       </div>
     </div>
   );

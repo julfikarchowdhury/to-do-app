@@ -61,7 +61,16 @@ hr {
   box-shadow: 0 0 10px 4px rgba(0, 255, 255, 1);
   border-color: #00fff2;
 }
-
+/* page header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.page-header .delete {
+  background-color: red;
+  color: white;
+}
 /* main body */
 .main-body {
   padding: 20px;
@@ -69,6 +78,7 @@ hr {
 .to-do-container {
   display: flex;
   gap: 40px;
+  justify-content: space-between;
 }
 
 /* to do list */
@@ -76,10 +86,12 @@ hr {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
 }
 .todo-card {
   background-color: var(--bg-solid);
   display: flex;
+  justify-content: space-between;
   padding: 20px;
   gap: 20px;
   border-radius: 15px;
@@ -95,6 +107,14 @@ hr {
 }
 .todo-buttons button {
   width: 100%;
+  color: white;
+}
+.todo-buttons .delete {
+  background-color: red;
+}
+.todo-buttons .completed {
+  background-color: green;
+  cursor:not-allowed;
 }
 /* end to do list */
 
@@ -157,7 +177,7 @@ hr {
     flex-direction: column;
   }
   .to-do-form {
-    width: 100%;
+    min-width: 300px;
   }
   .todo-card {
     display: flex;

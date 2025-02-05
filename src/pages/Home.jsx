@@ -4,17 +4,22 @@ import TodoList from "../components/TodoList";
 import TodoForm from "../components/TodoForm";
 import "../assets/styles.css";
 import Filters from "../components/Filters";
+import { TodoProvider } from "../context/TodoContext";
 const Home = () => {
+  //localStorage.clear();
   return (
     <div>
-      <Header />
-      <div className="main-body">
-        <Filters />
-        <div className="to-do-container">
-          <TodoList />
-          <TodoForm />
+      <TodoProvider>
+        
+        <Header />
+        <div className="main-body">
+          <Filters />
+          <div className="to-do-container">
+            <TodoList />
+            <TodoForm />
+          </div>
         </div>
-      </div>
+      </TodoProvider>
     </div>
   );
 };

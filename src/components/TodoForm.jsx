@@ -1,16 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { TodoContext } from "../context/TodoContext";
 
 const TodoForm = () => {
+  const { todos, addTodo } = useContext(TodoContext);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
+    setError,
   } = useForm();
-  const submit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
+
+  const submit = (data) => {
+    // localStorage.clear();
+    const newTodo = { id: Date.now(), done: false, ...data };
+
+    const isDuplicate =
+      todos.length > 0
+        ? todos.some((todo) => todo.title === newTodo.title)
+        : false;
+
+    if (isDuplicate) {
+      setError("title", { type: "manual", message: "Title already exists!" });
+      return;
+    }
+    addTodo(newTodo);
+    reset();
   };
+
   return (
     <div className="to-do-form">
       <h2 className="text-center">Add To Do</h2>
@@ -19,23 +38,24 @@ const TodoForm = () => {
         <div className="form-group">
           <label htmlFor="title">Title</label>
           <input
-            {...register("email", {
-              required: "Email is required",
+            {...register("title", {
+              required: "Title is required",
               minLength: {
                 value: 5,
-                message: "Email must be at least 5 characters long",
+                message: "Title must be at least 5 characters long",
               },
             })}
             type="text"
-            id="email"
+            id="title"
           />
-          {errors.email && <div>{errors.email.message}</div>}
-        </div>{" "}
+          {errors.title && <div>{errors.title.message}</div>}
+        </div>
+
         <div className="form-group">
           <label htmlFor="description">Description</label>
           <textarea
             {...register("description", {
-              required: "Email is required",
+              required: "Description is required",
               minLength: {
                 value: 10,
                 message: "Description must be at least 10 characters long",
@@ -44,9 +64,11 @@ const TodoForm = () => {
             id="description"
             rows="4"
           ></textarea>
+          {errors.description && <div>{errors.description.message}</div>}
         </div>
+
         <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Loading" : "Submit"}
+          {isSubmitting ? "Loading..." : "Submit"}
         </button>
       </form>
     </div>
