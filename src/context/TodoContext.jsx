@@ -3,6 +3,8 @@ import React, { createContext, useState, useEffect } from "react";
 const TodoContext = createContext();
 
 const TodoProvider = ({ children }) => {
+  const [filter, setFilter] = useState("all");
+
   const [todos, setTodos] = useState(
     JSON.parse(localStorage.getItem("todos")) || []
   );
@@ -31,9 +33,27 @@ const TodoProvider = ({ children }) => {
     localStorage.clear();
     setTodos([]);
   };
+
+  const setFilterValue = (filterValue) => {
+    setFilter(filterValue);
+  };
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "all") return true;
+    if (filter === "completed") return todo.done;
+    if (filter === "pending") return !todo.done;
+    return true;
+  });
   return (
     <TodoContext.Provider
-      value={{ todos, addTodo, markDoneTodo, removeTodo, deleteAllData }}
+      value={{
+        todos: filteredTodos,
+        addTodo,
+        markDoneTodo,
+        removeTodo,
+        deleteAllData,
+        setFilterValue,
+      }}
     >
       {children}
     </TodoContext.Provider>
