@@ -1,59 +1,39 @@
 import React, { createContext, useState, useEffect } from "react";
+import { getTodos, saveTodos, clearTodos } from "../utils/storage";
 
 const TodoContext = createContext();
 
 const TodoProvider = ({ children }) => {
-  const [filter, setFilter] = useState("all");
+  const [todos, setTodos] = useState(getTodos());
 
-  const [todos, setTodos] = useState(
-    JSON.parse(localStorage.getItem("todos")) || []
-  );
+  useEffect(() => {
+    saveTodos(todos);
+  }, [todos]);
 
   const addTodo = (newTodo) => {
-    const updatedTodos = [...todos, newTodo];
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
   };
 
   const markDoneTodo = (todoId) => {
-    const updatedTodos = todos.map((todo) =>
-      todo.id == todoId ? { ...todo, done: true } : todo
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === todoId ? { ...todo, done: true } : todo
+      )
     );
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
   };
 
   const removeTodo = (todoId) => {
-    const updatedTodos = todos.filter((todo) => todo.id !== todoId);
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== todoId));
   };
 
   const deleteAllData = () => {
-    localStorage.clear();
+    clearTodos();
     setTodos([]);
   };
 
-  const setFilterValue = (filterValue) => {
-    setFilter(filterValue);
-  };
-
-  const filteredTodos = todos.filter((todo) => {
-    if (filter === "all") return true;
-    if (filter === "completed") return todo.done;
-    if (filter === "pending") return !todo.done;
-    return true;
-  });
   return (
     <TodoContext.Provider
-      value={{
-        todos: filteredTodos,
-        addTodo,
-        markDoneTodo,
-        removeTodo,
-        deleteAllData,
-        setFilterValue,
-      }}
+      value={{ todos, addTodo, markDoneTodo, removeTodo, deleteAllData }}
     >
       {children}
     </TodoContext.Provider>
